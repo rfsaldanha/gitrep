@@ -27,6 +27,7 @@ report <- function(after, until = Sys.Date(), max = 1e+9, repo = ".", output_dir
 
 
 
+
   # If remote repo
   if(substr(repo, 0, 4) == "git@"){
     tmp_dir <- fs::path_temp("clone_repo")
@@ -44,8 +45,8 @@ report <- function(after, until = Sys.Date(), max = 1e+9, repo = ".", output_dir
   # Retrieve repo log
   cli::cli_alert_info("Retrieving repo log...")
   log_df <- gert::git_log(after = after, max = max, repo = repo)
-  log_df <- subset(log_df, time >= after)
-  log_df <- subset(log_df, time <= until+1)
+  log_df <- subset(log_df, log_df$time >= after)
+  log_df <- subset(log_df, log_df$time <= until+1)
   info_ls <- gert::git_info(repo = repo)
   cli::cli_alert_success("Done!")
 
