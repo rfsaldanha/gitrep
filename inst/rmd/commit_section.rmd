@@ -1,0 +1,10 @@
+
+### {{commit_data$time}}
+
+-  Author: {{commit_data$author}}
+-  Hash: {{commit_data$commit}}
+-  Affected files: {{commit_data$files}}
+
+{{commit_data$message}}
+
+\n

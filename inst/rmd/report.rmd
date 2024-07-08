@@ -1,0 +1,77 @@
+---
+title: "Repository report"
+output: 
+  html_document:
+    theme: journal
+    toc: yes
+    toc_float:
+      collapsed: false
+params:
+    since_date: null
+    until_date: null
+    info_ls: null
+    log_df: null
+    files_stats: null
+---
+
+Repository path: `r params$info_ls$path`
+
+Using repository data from `r params$since_date` to `r params$until_date`
+
+
+
+-  Commits: `r nrow(params$log_df)`
+-  Authors: `r length(unique(params$log_df$author))`
+
+## Day of the week
+
+```{r day-of-the-week-plot, echo=FALSE}
+wday <- lubridate::wday(params$log_df$time, label = TRUE, abbr = FALSE)
+wday <- factor(wday, levels = rev(c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday")))
+
+res <- data.frame(
+    wday = wday
+)
+
+ggplot2::ggplot(data = res, ggplot2::aes(y = wday)) +
+    ggplot2::geom_bar(fill = "#eb6864") +
+    ggplot2::theme_bw() +
+    ggplot2::labs(y = NULL)
+```
+
+## Authors
+
+```{r authors-plot, echo=FALSE}
+res <- data.frame(author = factor(params$log_df$author))
+
+ggplot2::ggplot(data = res, ggplot2::aes(y = author)) +
+    ggplot2::geom_bar(fill = "#eb6864") +
+    ggplot2::theme_bw() +
+    ggplot2::labs(y = NULL)
+```
+
+
+## Commits
+
+```{r commits-log, include=FALSE}
+commit_section <- system.file("rmd/commit_section.rmd", package = "gitrep")
+out = NULL
+for(i in 1:nrow(params$log_df)){
+    commit_data <- params$log_df[i,]
+    out = c(out, knitr::knit_expand(file = commit_section))
+}
+```
+
+`r paste(knitr::knit(text = out), collapse = '\n')`
+
+## Files stats
+
+```{r file-stats-table, echo = FALSE}
+if(!is.null(params$files_stats)){
+    gt::gt(params$files_stats)
+} else {
+    message("Not retrieved.")
+}
+```
+
+Report generated at `r format(Sys.time())`.
