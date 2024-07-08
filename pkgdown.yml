@@ -2,7 +2,7 @@ pandoc: 3.1.11
 pkgdown: 2.1.0
 pkgdown_sha: ~
 articles: {}
-last_built: 2024-07-08T17:21Z
+last_built: 2024-07-08T17:22Z
 urls:
   reference: https://rfsaldanha.github.io/gitrep/reference
   article: https://rfsaldanha.github.io/gitrep/articles
